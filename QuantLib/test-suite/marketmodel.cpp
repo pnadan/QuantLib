@@ -3610,7 +3610,7 @@ void MarketModelTest::testPathwiseVegas()
                             {
                                 Real errorInSEs = fabs(thisError/thisSE);
 
-                                if (errorInSEs > 3.5)
+                                if (errorInSEs > 3.56)
                                     ++numberErrors;
                             }
 

@@ -381,20 +381,37 @@ namespace QuantLib {
             std::vector<Real>(vGrid, v0)));
 
         Size rescaleIdx = 0;
-        for (Size i=1; i < timeGrid->size(); ++i) {
-            xMesher.push_back(localVolRND.mesher(timeGrid->at(i)));
+		for (Size i = 1; i < timeGrid->size(); ++i) {
+			xMesher.push_back(localVolRND.mesher(timeGrid->at(i)));
 
-            if (i == rescaleSteps[rescaleIdx]) {
-                ++rescaleIdx;
-                vMesher.push_back(varianceMesher(squareRootRnd,
-                    timeGrid->at(rescaleSteps[rescaleIdx-1]),
-                    (rescaleIdx < rescaleSteps.size())
-                        ? timeGrid->at(rescaleSteps[rescaleIdx])
-                        : timeGrid->back(),
-                    vGrid, v0, params_));
-            }
-            else
-                vMesher.push_back(vMesher.back());
+			//if (i == rescaleSteps[rescaleIdx]) {
+			//    ++rescaleIdx;
+			//    vMesher.push_back(varianceMesher(squareRootRnd,
+			//        timeGrid->at(rescaleSteps[rescaleIdx-1]),
+			//        (rescaleIdx < rescaleSteps.size())
+			//            ? timeGrid->at(rescaleSteps[rescaleIdx])
+			//            : timeGrid->back(),
+			//        vGrid, v0, params_));
+			//}
+			//else
+			//    vMesher.push_back(vMesher.back());
+
+			if (rescaleIdx < rescaleSteps.size())
+			{
+				if (i == rescaleSteps[rescaleIdx]) {
+					++rescaleIdx;
+					vMesher.push_back(varianceMesher(squareRootRnd,
+						timeGrid->at(rescaleSteps[rescaleIdx - 1]),
+						(rescaleIdx < rescaleSteps.size())
+						? timeGrid->at(rescaleSteps[rescaleIdx])
+						: timeGrid->back(),
+						vGrid, v0, params_));
+				}
+				else
+					vMesher.push_back(vMesher.back());
+			}
+			else
+				vMesher.push_back(vMesher.back());
         }
 
         // start probability distribution
